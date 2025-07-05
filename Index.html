@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <title>Website</title>
+    <style>
+        body {
+            background-color: white;
+            padding: 10px;
+        }
+
+        header {
+            text-align: center;
+            background-color: rgba(9, 159, 234, 0.575);
+            color: white;
+        }
+
+        main {
+            margin: 25px;
+            padding-bottom: 10%;
+            background-color: white;
+        }
+
+        section{
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            padding: auto;
+        }
+
+        h3{
+            color: rgba(9, 159, 234, 0.575);
+            border-bottom: 2px solid lightblue;
+            padding: 10px;
+        }
+
+        #first{
+            color:white
+        }
+
+        #second{
+            color: black;
+        }
+
+        img {
+            background-color: lightgrey;
+            display: block;
+            margin: auto;
+            width: 380px;
+            border-radius: 50px;
+        }
+    
+        .img-container{
+            background-color: black;
+            padding: 10px;
+            margin: auto;
+            width: fit-content;
+            border-radius: 60px;
+        }
+
+        a {
+            text-decoration: none;
+            color:blue;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        a:hover{
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: black;
+            text-align: center;
+            padding: 1%;
+            margin-block-start: auto;
+        }
+
+        button:hover {
+            background-color: brown;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1><b>My First Web Page </b></h1>
+        <p id="first"><i>A webpage is a digital document on the World Wide Web, written in HTML, that can display text, images, and other media. 
+            It's designed to be viewed in a web browser and can be linked to other webpages.</i></p>
+    </header>
+
+    <main>
+        <h3>Uses of Web Pages</h3>
+        <p id="second">Webpages serve as accessible platforms to present information, share content, and facilitate online interaction for individuals,businesses,and organizations worldwide.
+            They enable communication,commerce,education and entertainment,acting as a global digital presence.</p>
+        
+        <h3>Sample Image</h3>
+        <div class="img-container">
+            <img src="pic.webp" alt="pic image">
+        </div>
+        
+        <h3>For more </h3>
+        <p id="third">We can Search anything by using this Link 
+        <a href="https://www.google.com/">Visit Google.com</a></p>
+    </main>
+        
+    <footer>
+        <button id="alertButton">Submit</button><br>
+    </footer>
+
+    <script>
+        const button = document.getElementById("alertButton");
+        button.addEventListener("click", function()
+        {alert("Welcome to my first project!");});
+    </script>
+</body>
+</html>
