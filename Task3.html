@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz + Joke App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff6f0;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box {
+      background-color: #fff;
+      border: 2px solid #ffa94d;
+      max-width: 500px;
+      width: 100%;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(255, 165, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #ff7a00;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    label {
+      margin-left: 10px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    button {
+      background-color: #ff7a00;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #e86c00;
+    }
+
+    #feedback, #result, #jokeResult {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 15px;
+      color: #d35400;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      .box {
+        margin: 10px;
+        padding: 15px;
+      }
+      h1, h2 {
+        font-size: 1.5rem;
+      }
+      label {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1, h2 {
+        font-size: 1.2rem;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2 id="question">Loading question...</h2>
+    <ul>
+      <li><input type="radio" name="answer" id="a" class="option"><label for="a" id="a_text">Option A</label></li>
+      <li><input type="radio" name="answer" id="b" class="option"><label for="b" id="b_text">Option B</label></li>
+      <li><input type="radio" name="answer" id="c" class="option"><label for="c" id="c_text">Option C</label></li>
+      <li><input type="radio" name="answer" id="d" class="option"><label for="d" id="d_text">Option D</label></li>
+    </ul>
+
+    <button id="submitBtn">Submit</button>
+    <button id="nextBtn" style="display:none;">Next</button>
+
+    <div id="feedback"></div>
+    <div id="result"></div>
+  </div>
+
+  <div class="box">
+    <h1>Random Joke Generator</h1>
+    <button onclick="loadJoke()">Get a Joke</button>
+    <p id="jokeResult"></p>
+  </div>
+
+  <script>
+    
+    const quizData = [
+  {
+    question: "Which language runs in a web browser?",
+    a: "Java",
+    b: "C",
+    c: "Python",
+    d: "JavaScript",
+    correct: "d"
+  },
+  {
+    question: "What does CSS stand for?",
+    a: "Central Style Sheets",
+    b: "Cascading Style Sheets",
+    c: "Computer Style Sheets",
+    d: "Creative Style System",
+    correct: "b"
+  },
+  {
+    question: "What does HTML stand for?",
+    a: "HyperText Markup Language",
+    b: "Home Tool Markup Language",
+    c: "Hyper Trainer Marking Language",
+    d: "Hyper Transfer Machine Language",
+    correct: "a"
+  }
+];
+
+    let currentQuiz = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const a_text = document.getElementById("a_text");
+    const b_text = document.getElementById("b_text");
+    const c_text = document.getElementById("c_text");
+    const d_text = document.getElementById("d_text");
+    const submitBtn = document.getElementById("submitBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const answers = document.querySelectorAll(".option");
+    const feedbackEl = document.getElementById("feedback");
+    const resultEl = document.getElementById("result");
+
+    function loadQuiz() {
+      deselect();
+      feedbackEl.innerText = "";
+      const q = quizData[currentQuiz];
+      questionEl.innerText = q.question;
+      a_text.innerText = q.a;
+      b_text.innerText = q.b;
+      c_text.innerText = q.c;
+      d_text.innerText = q.d;
+      submitBtn.style.display = "block";
+      nextBtn.style.display = "none";
+    }
+
+    function getAnswer() {
+      let selected = null;
+      answers.forEach((input) => {
+        if (input.checked) {
+          selected = input.id;
+        }
+      });
+      return selected;
+    }
+
+    function deselect() {
+      answers.forEach(input => input.checked = false);
+    }
+
+    submitBtn.addEventListener("click", () => {
+      const selected = getAnswer();
+      if (selected) {
+        const correct = quizData[currentQuiz].correct;
+        if (selected === correct) {
+          feedbackEl.innerText = "✅ Correct!";
+          score++;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerText = `❌ Wrong! Correct answer: ${correctText}`;
+        }
+
+        submitBtn.style.display = "none";
+        nextBtn.style.display = "block";
+      } else {
+        alert("Please select an answer!");
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentQuiz++;
+      if (currentQuiz < quizData.length) {
+        loadQuiz();
+      } else {
+        questionEl.style.display = "none";
+        document.querySelector("ul").style.display = "none";
+        submitBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        feedbackEl.style.display = "none";
+        resultEl.innerHTML = `🎉 You scored ${score} out of ${quizData.length}<br><br><button onclick="location.reload()">Restart Quiz</button>`;
+      }
+    });
+    loadQuiz();
+    function loadJoke() {
+      const jokeText = document.getElementById("jokeResult");
+      jokeText.innerText = "Loading a joke...";
+      fetch("https://official-joke-api.appspot.com/random_joke")
+        .then(res => res.json())
+        .then(data => {
+          jokeText.innerText = `${data.setup} - ${data.punchline}`;
+        })
+        .catch(() => {
+          jokeText.innerText = "Couldn't load a joke right now!";
+        });
+    }
+  </script>
+
+</body>
+</html>
