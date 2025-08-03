@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <style>
+    body {
+      background-color: #f1f8e9;
+      font-family: Arial, sans-serif;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #558b2f;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+    .product p {
+      color: #777;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Listing</h1>
+  <div class="controls">
+    <select id="categoryFilter" onchange="filterProducts()">
+      <option value="All">All Categories</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Dress">Dress</option>
+      <option value="Toys">Toys</option>
+      <option value="Books">Books</option>
+      <option value="Home">Home</option>
+    </select>
+    <select id="sort" onchange="sortProducts()">
+      <option value="price-asc">Price Low to High</option>
+      <option value="price-desc">Price High to Low</option>
+    </select>
+  </div>
+  <div id="products"></div>
+
+  <script>
+    const items = [
+      { name: 'Wireless Headphones', price: 1200, category: 'Electronics', img:'headphones.jpeg' },
+      { name: 'Cotton Shirt', price: 700, category: 'Dress', img: 'download.jpeg' },
+      { name: 'Building Blocks', price: 350, category: 'Toys', img: 'download (1).jpeg' },
+      { name: 'Bluetooth Speaker', price: 1800, category: 'Electronics', img: 'download (2).jpeg' },
+      { name: 'Doll Set', price: 500, category: 'Toys', img: 'images (1).jpeg' },
+      { name: 'LED Monitor', price: 7000, category: 'Electronics', img: 'download (3).jpeg' },
+      { name: 'Party Dress', price: 1500, category: 'Dress', img: 'images (2).jpeg' },
+      { name: 'RC Car', price: 1300, category: 'Toys', img: 'images (3).jpeg' },
+      { name: 'Formal Trousers', price: 900, category: 'Dress', img: 'images (4).jpeg' },
+      { name: 'Smart Watch', price: 2200, category: 'Electronics', img: 'download (4).jpeg' },
+      { name: 'Toy Gun', price: 450, category: 'Toys', img: 'download (5).jpeg' },
+      { name: 'Denim Jacket', price: 1600, category: 'Dress', img: 'download (6).jpeg' },
+      { name: 'Laptop', price: 45000, category: 'Electronics', img: 'download (7).jpeg' },
+      { name: 'Cookware Set', price: 2100, category: 'Home', img: 'download (8).jpeg' },
+      { name: 'Bookshelf', price: 3200, category: 'Home', img: 'download (9).jpeg' },
+      { name: 'Fiction Book', price: 300, category: 'Books', img: 'images (5).jpeg' },
+      { name: 'Table Lamp', price: 850, category: 'Home', img: 'download (10).jpeg' }
+    ];
+
+    let filteredItems = [...items];
+
+    function renderProducts() {
+      const container = document.getElementById('products');
+      container.innerHTML = '';
+      filteredItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>Category: ${item.category}</p>
+          <p>Price: ₹${item.price}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function sortProducts() {
+      const sortValue = document.getElementById('sort').value;
+      if (sortValue === 'price-asc') {
+        filteredItems.sort((a, b) => a.price - b.price);
+      } else {
+        filteredItems.sort((a, b) => b.price - a.price);
+      }
+      renderProducts();
+    }
+
+    function filterProducts() {
+      const selectedCategory = document.getElementById('categoryFilter').value;
+      filteredItems = selectedCategory === 'All'
+        ? [...items]
+        : items.filter(item => item.category === selectedCategory);
+      sortProducts();
+    }
+
+    filterProducts();
+  </script>
+</body>
+</html>
